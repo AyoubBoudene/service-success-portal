@@ -10,7 +10,8 @@ import {
   Settings,
   Shield,
   FileText,
-  UserCheck
+  UserCheck,
+  Package
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -30,6 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setCurrentView }) => {
 
   const adminItems = [
     { id: 'admin-users', label: 'إدارة المستخدمين', icon: UserCheck },
+    { id: 'admin-services', label: 'إدارة الخدمات', icon: Package },
     { id: 'admin-reports', label: 'التقارير المتقدمة', icon: FileText },
     { id: 'admin-settings', label: 'إعدادات النظام', icon: Settings },
   ];

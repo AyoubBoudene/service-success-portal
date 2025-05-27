@@ -9,6 +9,7 @@ import KnowledgeBase from '../components/KnowledgeBase';
 import Chat from '../components/Chat';
 import Analytics from '../components/Analytics';
 import UserManagement from '../components/admin/UserManagement';
+import ServiceManagement from '../components/admin/ServiceManagement';
 import Reports from '../components/admin/Reports';
 import SystemSettings from '../components/admin/SystemSettings';
 
@@ -31,6 +32,8 @@ const Index = () => {
         return <Analytics />;
       case 'admin-users':
         return <UserManagement />;
+      case 'admin-services':
+        return <ServiceManagement />;
       case 'admin-reports':
         return <Reports />;
       case 'admin-settings':
