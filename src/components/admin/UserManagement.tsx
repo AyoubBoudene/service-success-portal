@@ -20,6 +20,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface User {
   id: string;
@@ -35,8 +37,9 @@ interface User {
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
+  const { toast } = useToast();
   
-  const [users] = useState<User[]>([
+  const [users, setUsers] = useState<User[]>([
     {
       id: '1',
       name: 'أحمد محمد',
@@ -69,6 +72,41 @@ const UserManagement = () => {
     }
   ]);
 
+  const handleAddUser = () => {
+    toast({
+      title: "إضافة مستخدم جديد",
+      description: "سيتم فتح نموذج إضافة مستخدم جديد",
+    });
+  };
+
+  const handleEditUser = (userId: string) => {
+    const user = users.find(u => u.id === userId);
+    toast({
+      title: "تعديل المستخدم",
+      description: `تعديل بيانات ${user?.name}`,
+    });
+  };
+
+  const handleManagePermissions = (userId: string) => {
+    const user = users.find(u => u.id === userId);
+    toast({
+      title: "إدارة الصلاحيات",
+      description: `إدارة صلاحيات ${user?.name}`,
+    });
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    const user = users.find(u => u.id === userId);
+    if (confirm(`هل أنت متأكد من حذف المستخدم ${user?.name}؟`)) {
+      setUsers(users.filter(u => u.id !== userId));
+      toast({
+        title: "تم حذف المستخدم",
+        description: `تم حذف ${user?.name} بنجاح`,
+        variant: "destructive",
+      });
+    }
+  };
+
   const getRoleColor = (role: string) => {
     switch (role) {
       case 'admin': return 'bg-red-100 text-red-800';
@@ -98,10 +136,13 @@ const UserManagement = () => {
           <h1 className="text-3xl font-bold text-gray-900">إدارة المستخدمين</h1>
           <p className="text-gray-600 mt-2">إدارة جميع المستخدمين والصلاحيات</p>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+        <Button 
+          onClick={handleAddUser}
+          className="bg-blue-600 hover:bg-blue-700 flex items-center space-x-2"
+        >
           <UserPlus className="w-5 h-5" />
           <span>إضافة مستخدم جديد</span>
-        </button>
+        </Button>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border">
@@ -175,13 +216,25 @@ const UserManagement = () => {
                 <TableCell className="text-sm text-gray-600">{user.createdAt}</TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-2">
-                    <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                    <button 
+                      onClick={() => handleEditUser(user.id)}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="تعديل المستخدم"
+                    >
                       <Edit3 className="w-4 h-4" />
                     </button>
-                    <button className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors">
+                    <button 
+                      onClick={() => handleManagePermissions(user.id)}
+                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                      title="إدارة الصلاحيات"
+                    >
                       <Shield className="w-4 h-4" />
                     </button>
-                    <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                    <button 
+                      onClick={() => handleDeleteUser(user.id)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="حذف المستخدم"
+                    >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
