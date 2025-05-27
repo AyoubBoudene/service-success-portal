@@ -8,20 +8,43 @@ import Customers from '../components/Customers';
 import KnowledgeBase from '../components/KnowledgeBase';
 import Chat from '../components/Chat';
 import Analytics from '../components/Analytics';
+import UserManagement from '../components/admin/UserManagement';
+import Reports from '../components/admin/Reports';
+import SystemSettings from '../components/admin/SystemSettings';
 
 const Index = () => {
   const [currentView, setCurrentView] = useState('dashboard');
+
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'dashboard':
+        return <Dashboard />;
+      case 'tickets':
+        return <Tickets />;
+      case 'customers':
+        return <Customers />;
+      case 'knowledge':
+        return <KnowledgeBase />;
+      case 'chat':
+        return <Chat />;
+      case 'analytics':
+        return <Analytics />;
+      case 'admin-users':
+        return <UserManagement />;
+      case 'admin-reports':
+        return <Reports />;
+      case 'admin-settings':
+        return <SystemSettings />;
+      default:
+        return <Dashboard />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar currentView={currentView} setCurrentView={setCurrentView} />
       <main className="flex-1 overflow-auto">
-        {currentView === 'dashboard' && <Dashboard />}
-        {currentView === 'tickets' && <Tickets />}
-        {currentView === 'customers' && <Customers />}
-        {currentView === 'knowledge' && <KnowledgeBase />}
-        {currentView === 'chat' && <Chat />}
-        {currentView === 'analytics' && <Analytics />}
+        {renderCurrentView()}
       </main>
     </div>
   );
